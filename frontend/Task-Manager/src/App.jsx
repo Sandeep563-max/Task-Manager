@@ -1,52 +1,49 @@
-import React from 'react'
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-} from 'react-router-dom'
-import Dashboard from './pages/Admin/Dashboard';
-import Login from './pages/Auth/Login';
-import SignUp from './pages/Auth/SignUp';
-import ManageTasks from './pages/Admin/ManageTasks';
-import CreateTask from './pages/Admin/CreateTask';
-import ManageUsers from './pages/Admin/ManageUsers';
-import UserDashboard from './pages/User/UserDashboard';
-import PrivateRoute from './routes/PrivateRoute';
-import MyTasks from './pages/User/MyTasks';
-import ViewTaskDetails from './pages/User/ViewTaskDetails';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+// Import your Auth pages
+import Login from './pages/Auth/Login';
+import Signup from './pages/Auth/SignUp';
+
+// Import your Admin pages
+import Dashboard from './pages/Admin/Dashboard';
+
+// Import your User pages
+import UserDashboard from './pages/User/UserDashboard';
 
 const App = () => {
   return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+    <BrowserRouter>
+      <Routes>
+        {/* Default Route: Automatically send users to the login page */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-          {/* Admin Routes */}
-          <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/manage-tasks" element={<ManageTasks />} />
-            <Route path="/admin/create-task" element={<CreateTask />} />
-            <Route path="/admin/manage-users" element={<ManageUsers />} />
-          </Route>
+        {/* --- AUTHENTICATION ROUTES --- */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-            {/* User Routes */}
-          <Route element={<PrivateRoute allowedRoles={['user']} />}>
-            <Route path="/user/dashboard" element={<UserDashboard />} />
-            <Route path="/user/tasks" element={<MyTasks />} />
-            <Route path="/user/task-details/:id" element={<ViewTaskDetails />} />
-          </Route>
+        {/* --- ADMIN ROUTES --- */}
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+        
+        {/* --- USER ROUTES --- */}
+        <Route path="/user/dashboard" element={<UserDashboard />} />
 
-        </Routes>
-      </Router>
-    </div>
-  )
-}
+        {/* ========================================= */}
+        {/* FUTURE ROUTES (Uncomment as we build them) */}
+        {/* ========================================= */}
+        
+        {/* Admin Future Routes */}
+        {/* <Route path="/admin/tasks" element={<ManageTasks />} /> */}
+        {/* <Route path="/admin/create-task" element={<CreateTask />} /> */}
+        {/* <Route path="/admin/team" element={<ManageUsers />} /> */}
 
-export default App
+        {/* User Future Routes */}
+        {/* <Route path="/user/tasks" element={<MyTasks />} /> */}
+        {/* <Route path="/user/task-details/:id" element={<ViewTaskDetails />} /> */}
 
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-
-
+export default App;
